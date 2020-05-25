@@ -7,12 +7,45 @@
 #include "Utility.h"
 #include "DayTime.hpp"
 #include "Mount.hpp"
+#include "Globals.h"
 
 
 #define HALFSTEP 8
 #define FULLSTEP 4
 
 //SoftwareSerial BT(10,11);
+
+// The radius of the surface that the belt runs on (in V1 of the ring) was 168.24mm.
+// Belt moves 40mm for one stepper revolution (2mm pitch, 20 teeth) or 32mm for one stepper revolution (2mm pitch, 16 teeth)
+// RA wheel is 2 x PI x 168.24mm (V2:180mm) circumference = 1057.1mm (V2:1131mm)
+// One RA revolution needs 26.43 (1057.1mm / 40mm) or 33.03 (1057.1mm / 32mm) stepper revolutions (V2: 28.27 (1131mm/40mm)or 35.34 (1131mm/32mm))
+// Which means 108245 steps (26.43 x 4096) or 135291 steps (33.03 x 4096) moves 360 degrees (V2: 115812 steps (28.27 x 4096) or 144753 steps (35.34 x 4096))
+// So there are 300.1 (108245 / 360) or 375.8 (135291 / 360) steps/degree  (V2: 322 (115812 / 360) or 402.1 (144753 / 360))
+// Theoretically correct RA tracking speed is 1.246586 (300 x 14.95903 / 3600) or 1.562388 (376 x 14.95903 / 3600) (V2 : 1.333800 (322 x 14.95903 / 3600) or 
+// 1.670425 (402 x 14.95903 / 3600) steps/sec.
+
+// Belt moves 40mm for one stepper revolution (2mm pitch, 20 teeth) or 32mm for one stepper revolution (2mm pitch, 16 teeth).
+// DEC wheel is 2 x PI x 90mm circumference which is 565.5mm
+// One DEC revolution needs 14.13 (565.5mm/40mm) or 17.67 (565.5mm/32mm) stepper revolutions
+// Which means 57907 steps (14.14 x 4096) or 72384 (17.67 x 4096) moves 360 degrees
+// So there are 160.85 (57907/360) or 201 (72384 / 360) steps/degree
+
+// Steps per Degree based off gear size
+#if (RA_GEAR_SIZE == 20 && DEC_GEAR_SIZE == 20 && RING_VERSION == 1)
+  int RAStepsPerDegree 300;
+  int DECStepsPerDegree 161
+#elif (RA_GEAR_SIZE == 20 && DEC_GEAR_SIZE == 20 && RING_VERSION == 2)
+  int RAStepsPerDegree 322;
+  int DECStepsPerDegree 161
+#elif (RA_GEAR_SIZE == 16 && DEC_GEAR_SIZE == 16 && RING_VERSION == 1)
+  int RAStepsPerDegree 376;
+  int DECStepsPerDegree 201
+#elif (RA_GEAR_SIZE == 16 && DEC_GEAR_SIZE == 16 && RING_VERSION == 2)
+  int RAStepsPerDegree 405;
+  int DECStepsPerDegree 201
+#else
+  #error "Please Check Your Selections and Ensure Correct Values are entered (20 or 16 for gear size and 1 or 2 for ring version).  Mismatched gear sizes (ex. RA_GEAR_SIZE 20, DEC_GEAR_SIZE 16) are not supported at this time"
+#endif
 
 // RA Motor pins
 #ifdef INVERT_RA_DIR
