@@ -7,8 +7,8 @@
 #define NORTHERN_HEMISPHERE 1
 
 // Enter your gear size below.  If an offset is needed to correct homing, steps/degree can be tweaked for homing offset in a_inits.ino. 
-#define RA_GEAR_SIZE 16    // Only 20 or 16 can be set here
-#define DEC_GEAR_SIZE 16   // Only 20 or 16 can be set here
+#define RA_GEAR_SIZE 20    // Only 20 or 16 can be set here
+#define DEC_GEAR_SIZE 20   // Only 20 or 16 can be set here
 
 // Enter your RA Ring Version number below.  Only 1 or 2 can be entered here. V1 Ring has a ridge on top of the ring that the belt runs on and the ring runs on the bearings. 
 // V2 Ring has belt in a groove and belt runs on bearings.

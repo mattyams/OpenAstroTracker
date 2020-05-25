@@ -41,7 +41,7 @@
   int RAStepsPerDegree 376;
   int DECStepsPerDegree 201
 #elif (RA_GEAR_SIZE == 16 && DEC_GEAR_SIZE == 16 && RING_VERSION == 2)
-  int RAStepsPerDegree 405;
+  int RAStepsPerDegree 402;
   int DECStepsPerDegree 201
 #else
   #error "Please Check Your Selections and Ensure Correct Values are entered (20 or 16 for gear size and 1 or 2 for ring version).  Mismatched gear sizes (ex. RA_GEAR_SIZE 20, DEC_GEAR_SIZE 16) are not supported at this time"
